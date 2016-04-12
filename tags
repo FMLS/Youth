@@ -4,6 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+CC	Makefile	/^CC = gcc$/;"	m
 CDL_DELETE	include/list.h	488;"	d
 CDL_FOREACH	include/list.h	499;"	d
 CDL_FOREACH_SAFE	include/list.h	502;"	d
@@ -11,6 +12,9 @@ CDL_PREPEND	include/list.h	474;"	d
 CDL_SEARCH	include/list.h	514;"	d
 CDL_SEARCH_SCALAR	include/list.h	507;"	d
 CDL_SORT	include/list.h	216;"	d
+C_FLAGS	Makefile	/^C_FLAGS = -D_REENTRANT -DSERVER_DEBUG -c -Wall -Iinclude -g$/;"	m
+C_OBJECTS	Makefile	/^C_OBJECTS = $(patsubst %.c, %.o, $(C_SOURCES))$/;"	m
+C_SOURCES	Makefile	/^C_SOURCES = $(shell find . -name "*.c")$/;"	m
 DECLTYPE	include/hashtable.h	37;"	d
 DECLTYPE	include/hashtable.h	40;"	d
 DECLTYPE	include/hashtable.h	43;"	d
@@ -88,6 +92,7 @@ HASH_TO_BKT	include/hashtable.h	187;"	d
 LDECLTYPE	include/list.h	68;"	d
 LDECLTYPE	include/list.h	71;"	d
 LDECLTYPE	include/list.h	74;"	d
+LINK_FLAGS	Makefile	/^LINK_FLAGS = -lpthread$/;"	m
 LL_APPEND	include/list.h	307;"	d
 LL_APPEND	include/list.h	368;"	d
 LL_APPEND	include/list.h	369;"	d
@@ -104,7 +109,7 @@ LL_PREPEND	include/list.h	289;"	d
 LL_SEARCH	include/list.h	390;"	d
 LL_SEARCH_SCALAR	include/list.h	383;"	d
 LL_SORT	include/list.h	102;"	d
-MAX	youth.h	31;"	d
+MAX	include/youth.h	31;"	d
 MUR_FMIX	include/hashtable.h	528;"	d
 MUR_GETBLOCK	include/hashtable.h	506;"	d
 MUR_GETBLOCK	include/hashtable.h	522;"	d
@@ -121,6 +126,7 @@ MUR_TWO_TWO	include/hashtable.h	515;"	d
 MUR_TWO_TWO	include/hashtable.h	519;"	d
 NO_DECLTYPE	include/hashtable.h	39;"	d
 NO_DECLTYPE	include/list.h	70;"	d
+PROGRAM	Makefile	/^PROGRAM = out.youth$/;"	m
 UTHASH_H	include/hashtable.h	25;"	d
 UTHASH_VERSION	include/hashtable.h	67;"	d
 UTLIST_H	include/list.h	25;"	d
@@ -132,30 +138,30 @@ UT_hash_handle	include/hashtable.h	/^} UT_hash_handle;$/;"	t	typeref:struct:UT_h
 UT_hash_table	include/hashtable.h	/^typedef struct UT_hash_table {$/;"	s
 UT_hash_table	include/hashtable.h	/^} UT_hash_table;$/;"	t	typeref:struct:UT_hash_table
 WP	include/hashtable.h	512;"	d
-YOUTH_H_	youth.h	2;"	d
-YO_BACKLOG	youth.h	26;"	d
-YO_BUFFER_SIZE	youth.h	25;"	d
-YO_CPU_NUM	youth.h	67;"	d
-YO_ERR	youth.h	50;"	d
-YO_ERROR_MSG_SIZE	youth.h	70;"	d
-YO_FD_CLOSE	youth.h	54;"	d
-YO_FD_CONN	youth.h	52;"	d
-YO_FD_ERROR	youth.h	55;"	d
-YO_FD_LISTEN	youth.h	53;"	d
-YO_MAX_FDS	youth.h	19;"	d
-YO_MAX_FDTYPE	youth.h	69;"	d
-YO_MODE_CALL	youth.h	57;"	d
-YO_MODE_PROCESS	youth.h	59;"	d
-YO_MODE_THREAD	youth.h	58;"	d
-YO_OK	youth.h	49;"	d
-YO_PIPES_NUM	youth.h	24;"	d
-YO_START_SLEEP	youth.h	34;"	d
-YO_TASK_THREAD	youth.h	22;"	d
-YO_THREAD_NUM	youth.h	20;"	d
-YO_TIMEO_SEC	youth.h	27;"	d
-YO_TIMEO_USEC	youth.h	28;"	d
-YO_WORKER_NUM	youth.h	23;"	d
-YO_WRITER_NUM	youth.h	21;"	d
+YOUTH_H_	include/youth.h	2;"	d
+YO_BACKLOG	include/youth.h	26;"	d
+YO_BUFFER_SIZE	include/youth.h	25;"	d
+YO_CPU_NUM	include/youth.h	67;"	d
+YO_ERR	include/youth.h	50;"	d
+YO_ERROR_MSG_SIZE	include/youth.h	70;"	d
+YO_FD_CLOSE	include/youth.h	54;"	d
+YO_FD_CONN	include/youth.h	52;"	d
+YO_FD_ERROR	include/youth.h	55;"	d
+YO_FD_LISTEN	include/youth.h	53;"	d
+YO_MAX_FDS	include/youth.h	19;"	d
+YO_MAX_FDTYPE	include/youth.h	69;"	d
+YO_MODE_CALL	include/youth.h	57;"	d
+YO_MODE_PROCESS	include/youth.h	59;"	d
+YO_MODE_THREAD	include/youth.h	58;"	d
+YO_OK	include/youth.h	49;"	d
+YO_PIPES_NUM	include/youth.h	24;"	d
+YO_START_SLEEP	include/youth.h	34;"	d
+YO_TASK_THREAD	include/youth.h	22;"	d
+YO_THREAD_NUM	include/youth.h	20;"	d
+YO_TIMEO_SEC	include/youth.h	27;"	d
+YO_TIMEO_USEC	include/youth.h	28;"	d
+YO_WORKER_NUM	include/youth.h	23;"	d
+YO_WRITER_NUM	include/youth.h	21;"	d
 _CASTASGN	include/list.h	87;"	d
 _CASTASGN	include/list.h	95;"	d
 _NEXT	include/list.h	82;"	d
@@ -170,44 +176,55 @@ _RS	include/list.h	86;"	d
 _RS	include/list.h	94;"	d
 _SV	include/list.h	81;"	d
 _SV	include/list.h	89;"	d
-__yoEvent	youth.h	/^typedef struct __yoEvent$/;"	s
-__yoEventData	youth.h	/^typedef struct __yoEventData$/;"	s
+__yoEvent	include/youth.h	/^typedef struct __yoEvent$/;"	s
+__yoEventData	include/youth.h	/^typedef struct __yoEventData$/;"	s
+__yoFactory	include/youth.h	/^typedef struct __yoFactory$/;"	s
 __yoListNode	src/reactor/SelectReactor.c	/^typedef struct __yoListNode$/;"	s	file:
+__yoReactor	include/youth.h	/^struct __yoReactor$/;"	s
 __yoSelectReactor	src/reactor/SelectReactor.c	/^typedef struct __yoSelectReactor$/;"	s	file:
-__yoSendData	youth.h	/^typedef struct __yoSendData$/;"	s
+__yoSendData	include/youth.h	/^typedef struct __yoSendData$/;"	s
+add	include/youth.h	/^    int  (*add)      (yoReactor *, int, int);$/;"	m	struct:__yoReactor
 bloom_bv	include/hashtable.h	/^   uint8_t *bloom_bv;$/;"	m	struct:UT_hash_table
 bloom_nbits	include/hashtable.h	/^   char bloom_nbits;$/;"	m	struct:UT_hash_table
 bloom_sig	include/hashtable.h	/^   uint32_t bloom_sig; \/* used only to test bloom exists in external analysis *\/$/;"	m	struct:UT_hash_table
 buckets	include/hashtable.h	/^   UT_hash_bucket *buckets;$/;"	m	struct:UT_hash_table
 count	include/hashtable.h	/^   unsigned count;$/;"	m	struct:UT_hash_bucket
-data	youth.h	/^    char *data;$/;"	m	struct:__yoSendData
-data	youth.h	/^    char data[YO_BUFFER_SIZE];$/;"	m	struct:__yoEventData
+data	include/youth.h	/^    char *data;$/;"	m	struct:__yoSendData
+data	include/youth.h	/^    char data[YO_BUFFER_SIZE];$/;"	m	struct:__yoEventData
+del	include/youth.h	/^    int  (*del)      (yoReactor *, int     );$/;"	m	struct:__yoReactor
+dispatch	include/youth.h	/^    int (*dispatch) (struct __yoFactory *, yoEventData *);$/;"	m	struct:__yoFactory
 expand_mult	include/hashtable.h	/^   unsigned expand_mult;$/;"	m	struct:UT_hash_bucket
+factory	include/youth.h	/^    yoFactory *factory;$/;"	m	struct:__yoReactor
+fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoEvent
+fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoEventData
+fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoSendData
 fd	src/reactor/SelectReactor.c	/^    int fd;$/;"	m	struct:__yoListNode	file:
-fd	youth.h	/^    int fd;$/;"	m	struct:__yoEvent
-fd	youth.h	/^    int fd;$/;"	m	struct:__yoEventData
-fd	youth.h	/^    int fd;$/;"	m	struct:__yoSendData
 fd_num	src/reactor/SelectReactor.c	/^    int fd_num;$/;"	m	struct:__yoSelectReactor	file:
-fds	src/reactor/SelectReactor.c	/^    yoListNode *fds;$/;"	m	struct:__yoSelectReactor	file:
+fds	src/reactor/SelectReactor.c	/^    yoListNode *fds; \/\/链表结构$/;"	m	struct:__yoSelectReactor	file:
 fdtype	src/reactor/SelectReactor.c	/^    int fdtype;$/;"	m	struct:__yoListNode	file:
-from_id	youth.h	/^    int from_id;$/;"	m	struct:__yoEvent
-from_id	youth.h	/^    int from_id;$/;"	m	struct:__yoEventData
+finish	include/youth.h	/^    int (*finish)   (struct __yoFactory *, yoSendData  *);$/;"	m	struct:__yoFactory
+free	include/youth.h	/^    void (*free)     (yoReactor *          );$/;"	m	struct:__yoReactor
+from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEvent
+from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEventData
 get16bits	include/hashtable.h	441;"	d
 get16bits	include/hashtable.h	444;"	d
 get16bits	include/hashtable.h	448;"	d
+handle	include/youth.h	/^    yoReactor_handle handle[YO_MAX_FDTYPE];$/;"	m	struct:__yoReactor
 hashv	include/hashtable.h	/^   unsigned hashv;                   \/* result of hash-fcn(key)        *\/$/;"	m	struct:UT_hash_handle
 hh_head	include/hashtable.h	/^   struct UT_hash_handle *hh_head;$/;"	m	struct:UT_hash_bucket	typeref:struct:UT_hash_bucket::UT_hash_handle
 hh_next	include/hashtable.h	/^   struct UT_hash_handle *hh_next;   \/* next hh in bucket order        *\/$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_handle
 hh_prev	include/hashtable.h	/^   struct UT_hash_handle *hh_prev;   \/* previous hh in bucket order    *\/$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_handle
 hho	include/hashtable.h	/^   ptrdiff_t hho; \/* hash handle offset (byte pos of hash handle in element *\/$/;"	m	struct:UT_hash_table
+id	include/youth.h	/^    int  id;$/;"	m	struct:__yoFactory
+id	include/youth.h	/^    int id;$/;"	m	struct:__yoReactor
 ideal_chain_maxlen	include/hashtable.h	/^   unsigned ideal_chain_maxlen;$/;"	m	struct:UT_hash_table
 ineff_expands	include/hashtable.h	/^   unsigned ineff_expands, noexpand;$/;"	m	struct:UT_hash_table
 key	include/hashtable.h	/^   void *key;                        \/* ptr to enclosing struct's key  *\/$/;"	m	struct:UT_hash_handle
 keylen	include/hashtable.h	/^   unsigned keylen;                  \/* enclosing struct's key len     *\/$/;"	m	struct:UT_hash_handle
-len	youth.h	/^    int len;$/;"	m	struct:__yoEventData
-len	youth.h	/^    int len;$/;"	m	struct:__yoSendData
+len	include/youth.h	/^    int len;$/;"	m	struct:__yoEventData
+len	include/youth.h	/^    int len;$/;"	m	struct:__yoSendData
 log2_num_buckets	include/hashtable.h	/^   unsigned num_buckets, log2_num_buckets;$/;"	m	struct:UT_hash_table
-main	a.c	/^int main()$/;"	f
+main	src/reactor/SelectReactor.c	/^int main()$/;"	f
 maxfd	src/reactor/SelectReactor.c	/^    int maxfd;$/;"	m	struct:__yoSelectReactor	file:
 next	include/hashtable.h	/^   void *next;                       \/* next element in app order      *\/$/;"	m	struct:UT_hash_handle
 next	src/reactor/SelectReactor.c	/^    struct __yoListNode *next, *prev;$/;"	m	struct:__yoListNode	typeref:struct:__yoListNode::__yoListNode	file:
@@ -215,13 +232,23 @@ noexpand	include/hashtable.h	/^   unsigned ineff_expands, noexpand;$/;"	m	struct
 nonideal_items	include/hashtable.h	/^   unsigned nonideal_items;$/;"	m	struct:UT_hash_table
 num_buckets	include/hashtable.h	/^   unsigned num_buckets, log2_num_buckets;$/;"	m	struct:UT_hash_table
 num_items	include/hashtable.h	/^   unsigned num_items;$/;"	m	struct:UT_hash_table
+object	include/youth.h	/^    void *object;$/;"	m	struct:__yoFactory
+object	include/youth.h	/^    void *object;$/;"	m	struct:__yoReactor
+onFinish	include/youth.h	/^    int (*onFinish) (struct __yoFactory *, yoSendData  *);$/;"	m	struct:__yoFactory
+onTask	include/youth.h	/^    int (*onTask)   (struct __yoFactory *, yoEventData *);$/;"	m	struct:__yoFactory
 prev	include/hashtable.h	/^   void *prev;                       \/* prev element in app order      *\/$/;"	m	struct:UT_hash_handle
 prev	src/reactor/SelectReactor.c	/^    struct __yoListNode *next, *prev;$/;"	m	struct:__yoListNode	typeref:struct:__yoListNode::	file:
-rfds	src/reactor/SelectReactor.c	/^    fd_set rfds;$/;"	m	struct:__yoSelectReactor	file:
+ptr	include/youth.h	/^    void *ptr;$/;"	m	struct:__yoFactory
+ptr	include/youth.h	/^    void *ptr;$/;"	m	struct:__yoReactor
+reactor	include/youth.h	/^    yoReactor *reactor;$/;"	m	struct:__yoFactory
+read_fds	src/reactor/SelectReactor.c	/^    fd_set read_fds;$/;"	m	struct:__yoSelectReactor	file:
+setHandle	include/youth.h	/^    int  (*setHandle)(yoReactor *, int , yoReactor_handle);$/;"	m	struct:__yoReactor
+shutdown	include/youth.h	/^    int (*shutdown) (struct __yoFactory *               );$/;"	m	struct:__yoFactory
 signature	include/hashtable.h	/^   uint32_t signature; \/* used only to find hash tables in external analysis *\/$/;"	m	struct:UT_hash_table
+start	include/youth.h	/^    int (*start)    (struct __yoFactory *               );$/;"	m	struct:__yoFactory
 tail	include/hashtable.h	/^   struct UT_hash_handle *tail; \/* tail hh in app order, for fast append    *\/$/;"	m	struct:UT_hash_table	typeref:struct:UT_hash_table::UT_hash_handle
 tbl	include/hashtable.h	/^   struct UT_hash_table *tbl;$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_table
-type	youth.h	/^    int type;$/;"	m	struct:__yoEvent
+type	include/youth.h	/^    int type;$/;"	m	struct:__yoEvent
 uint32_t	include/hashtable.h	/^typedef unsigned int uint32_t;$/;"	t
 uint8_t	include/hashtable.h	/^typedef unsigned char uint8_t;$/;"	t
 uthash_expand_fyi	include/hashtable.h	83;"	d
@@ -229,18 +256,35 @@ uthash_fatal	include/hashtable.h	70;"	d
 uthash_free	include/hashtable.h	76;"	d
 uthash_malloc	include/hashtable.h	73;"	d
 uthash_noexpand_fyi	include/hashtable.h	80;"	d
-yoEvent	youth.h	/^}yoEvent;$/;"	t	typeref:struct:__yoEvent
-yoEventData	youth.h	/^}yoEventData;$/;"	t	typeref:struct:__yoEventData
+wait	include/youth.h	/^    int  (*wait)     (yoReactor *, struct timeval *);$/;"	m	struct:__yoReactor
+yoEvent	include/youth.h	/^}yoEvent;$/;"	t	typeref:struct:__yoEvent
+yoEventData	include/youth.h	/^}yoEventData;$/;"	t	typeref:struct:__yoEventData
+yoFactory	include/youth.h	/^}yoFactory;$/;"	t	typeref:struct:__yoFactory
 yoListNode	src/reactor/SelectReactor.c	/^}yoListNode;$/;"	t	typeref:struct:__yoListNode	file:
-yoReactor_handle	youth.h	/^typedef int (*yoReactor_handle)(yoReactor *reactor, yoEvent *event);$/;"	t
-yoSendData	youth.h	/^}yoSendData;$/;"	t	typeref:struct:__yoSendData
-yoTrace	youth.h	62;"	d
-yoTrace	youth.h	64;"	d
-yo_calloc	youth.h	39;"	d
-yo_calloc	youth.h	44;"	d
-yo_free	youth.h	38;"	d
-yo_free	youth.h	43;"	d
-yo_malloc	youth.h	37;"	d
-yo_malloc	youth.h	42;"	d
-yo_realloc	youth.h	40;"	d
-yo_realloc	youth.h	45;"	d
+yoReactor	include/youth.h	/^typedef struct __yoReactor yoReactor;$/;"	t	typeref:struct:__yoReactor
+yoReactor_accept	src/reactor/ReactorBase.c	/^int yoReactor_accept(yoReactor *reactor, yoEvent * event)$/;"	f
+yoReactor_close	src/reactor/ReactorBase.c	/^int yoReactor_close(yoReactor *reactor, yoEvent *event)$/;"	f
+yoReactor_handle	include/youth.h	/^typedef int (*yoReactor_handle)(yoReactor *reactor, yoEvent *event);$/;"	t
+yoReactor_receive	src/reactor/ReactorBase.c	/^int yoReactor_receive(yoReactor *reactor, yoEvent *event)$/;"	f
+yoReactor_setHandle	src/reactor/ReactorBase.c	/^int yoReactor_setHandle(yoReactor *reactor, int fdtype, yoReactor_handle handle)$/;"	f
+yoSelectReactor	src/reactor/SelectReactor.c	/^}yoSelectReactor;$/;"	t	typeref:struct:__yoSelectReactor	file:
+yoSelectReactor_add	src/reactor/SelectReactor.c	/^int yoSelectReactor_add(yoReactor *reactor, int fd, int fdtype)$/;"	f
+yoSelectReactor_cmp	src/reactor/SelectReactor.c	/^int yoSelectReactor_cmp(yoListNode *a, yoListNode *b)$/;"	f
+yoSelectReactor_create	src/reactor/SelectReactor.c	/^int yoSelectReactor_create(yoReactor *reactor)$/;"	f
+yoSelectReactor_del	src/reactor/SelectReactor.c	/^int yoSelectReactor_del(yoReactor *reactor, int fd)$/;"	f
+yoSelectReactor_free	src/reactor/SelectReactor.c	/^void yoSelectReactor_free(yoReactor *reactor)$/;"	f
+yoSelectReactor_wait	src/reactor/SelectReactor.c	/^int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo)$/;"	f
+yoSendData	include/youth.h	/^}yoSendData;$/;"	t	typeref:struct:__yoSendData
+yoTrace	include/youth.h	62;"	d
+yoTrace	include/youth.h	64;"	d
+yo_calloc	include/youth.h	39;"	d
+yo_calloc	include/youth.h	44;"	d
+yo_errno	include/youth.h	/^int yo_errno;$/;"	v
+yo_error	include/youth.h	/^char yo_error[YO_ERROR_MSG_SIZE];$/;"	v
+yo_free	include/youth.h	38;"	d
+yo_free	include/youth.h	43;"	d
+yo_malloc	include/youth.h	37;"	d
+yo_malloc	include/youth.h	42;"	d
+yo_realloc	include/youth.h	40;"	d
+yo_realloc	include/youth.h	45;"	d
+youth_running	include/youth.h	/^int youth_running;$/;"	v
