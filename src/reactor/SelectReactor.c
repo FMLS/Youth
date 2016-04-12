@@ -137,6 +137,11 @@ int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo)
 
 int main()
 {
+    yoReactor reactor;
+    yoSelectReactor_create(&reactor);
+
+
+
 
     return 0;
 }
