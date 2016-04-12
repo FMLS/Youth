@@ -69,7 +69,7 @@
 #define YO_MAX_FDTYPE       32
 #define YO_ERROR_MSG_SIZE   256
 
-int youth_running=1;
+int youth_running;
 int yo_errno;
 char yo_error[YO_ERROR_MSG_SIZE];
 

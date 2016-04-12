@@ -1,7 +1,6 @@
 #include "youth.h"
 
 int tmp_pipe = 0;
-
 int myHeadle(yoReactor *reactor, yoEvent *event) {
    char buf[100];
    read(tmp_pipe, buf, 100); 
@@ -10,6 +9,7 @@ int myHeadle(yoReactor *reactor, yoEvent *event) {
 }
 int main()
 {
+    youth_running=1;
     int mpipe[2];
     pid_t pid;
     struct timeval tmo;
