@@ -135,13 +135,4 @@ int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo)
     return 0;
 }
 
-int main()
-{
-    yoReactor reactor;
-    yoSelectReactor_create(&reactor);
 
-
-
-
-    return 0;
-}

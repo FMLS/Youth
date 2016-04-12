@@ -69,7 +69,7 @@
 #define YO_MAX_FDTYPE       32
 #define YO_ERROR_MSG_SIZE   256
 
-int youth_running;
+int youth_running = 1;
 int yo_errno;
 char yo_error[YO_ERROR_MSG_SIZE];
 
@@ -137,9 +137,9 @@ int yoReactor_close(yoReactor *reactor, yoEvent *event);
 int yoReactor_setHandle(yoReactor *reactor, int fdtype, yoReactor_handle handle);
 int yoReactor_receive(yoReactor *reactor, yoEvent *event);
 
-
-
-
+int yoSelectReactor_create(yoReactor *reactor);
+int yoSelectReactor_add(yoReactor *reactor, int fd, int fdtype);
+int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo);
 
 
 
