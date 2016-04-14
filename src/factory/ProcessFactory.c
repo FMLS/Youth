@@ -150,13 +150,48 @@ static int yoFactoryProcess_worker_start(yoFactory *factory)
 static int yoFactoryProcess_worker_spawn(yoFactory *factory, int writer_id, int worker_id)
 {
     pid_t pid;
+    int ret = 0;
     int pipe[2];
     yoFactoryProcess *this = factory->object;
-    return YO_OK;
+    ret = socketpair(PF_LOCAL, SOCK_DGRAM, 0, pipe);
+    if (ret < 0) {
+        yoTrace("[yoFactoryProcess_worker_spaw] create unix socket failed \n");
+        return YO_ERR;
+    }
+
+    pid = fork();
+    if (pid < 0) {
+        yoTrace("[yoFactoryProcess_worker_spaw] fork worker process failed \n");
+        exit(5);
+    }
+    else if (pid == 0){
+        close(pipe[0]);
+        yoFactoryProcess_worker_loop(factory, pipe[1]);
+        exit(0);
+    }
+    else {
+        close(pipe[1]);
+        this->writers[writer_id].reactor.add(&(this->writers[writer_id].reactor), pipe[0], YO_FD_CONN);
+        this->workers[worker_id].pipe_fd = pipe[0];
+        return pid;
+    }
 }
 
 static int yoFactoryProcess_worker_loop(yoFactory *factory, int c_pipe)
 {
+    int n = 0;
+    yoEventData req;
+    c_worker_pipe = c_pipe;
+    while (1) {
+        n = read(c_pipe, &req, sizeof(req));
+        yoTrace("[Worker]Recv: pipe: %d | pti: %d\n", c_pipe, req.from_id);
+        if (n > 0) {
+            factory->onTask(factory, &req);
+        }
+        else {
+            yoTrace("[Worker] read pipe error \n");
+        }
+    }
     
     return YO_OK;
 }
