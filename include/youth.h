@@ -61,7 +61,7 @@
 #ifdef YO_DEBUG
 #define yoTrace(str, ...)    {printf("[%s:%d:%s]"str,__FILE__,__LINE__,__func__,##__VA_ARGS__);}
 #else
-#define yoTrace(str, ...)   {snprintf(sw_error,YO_ERROR_MSG_SIZE,"[%s:%d:%s]"str,__FILE__,__LINE__,__func__,##__VA_ARGS__);}
+#define yoTrace(str, ...)   {snprintf(yo_error,YO_ERROR_MSG_SIZE,"[%s:%d:%s]"str,__FILE__,__LINE__,__func__,##__VA_ARGS__);}
 #endif
 
 #define YO_CPU_NUM      sysconf(_SC_NPROCESSORS_ONLN) //保留
@@ -69,7 +69,9 @@
 #define YO_MAX_FDTYPE       32
 #define YO_ERROR_MSG_SIZE   256
 
-
+int youth_running;
+int yo_errno;
+char yo_error[YO_ERROR_MSG_SIZE];
 
 
 
@@ -130,7 +132,10 @@ struct __yoReactor
     int  (*setHandle)(yoReactor *, int , yoReactor_handle);
 };
 
-
+int yoReactor_accept(yoReactor *reactor, yoEvent *event);
+int yoReactor_close(yoReactor *reactor, yoEvent *event);
+int yoReactor_setHandle(yoReactor *reactor, int fdtype, yoReactor_handle handle);
+int yoReactor_receive(yoReactor *reactor, yoEvent *event);
 
 
 
