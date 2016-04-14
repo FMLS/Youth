@@ -89,7 +89,7 @@ typedef struct __yoSendData
 {
     int fd;
     int len;
-    char *data;
+    char data[100];
 }yoSendData;
 
 typedef struct __yoEvent

@@ -14,7 +14,6 @@ int myTask(yoFactory *factory, yoEventData *event)
     char buf[10];
     yoSendData *send_data = (yoSendData*)malloc(sizeof(yoSendData));
     sprintf(buf, "%d", event->fd);
-    send_data->data = (char*)malloc(100 * sizeof(char));
     strcpy(send_data->data, "hello i am Task, I get msg from client:  \n");
     strcat(send_data->data, buf);
     printf("%s \n", send_data->data);

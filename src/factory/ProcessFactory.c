@@ -107,13 +107,13 @@ int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
     yoSendData resp;
     printf("event_fd %d \n", event->fd);
     ret = read(event->fd, &resp, sizeof(resp));
-    printf("reactor: %d\n", reactor->id);
-//    if (ret < 0) {
-//        strcpy(buf, "read failed\n");
-//        return -1;
-//    }
-//    strcpy(buf, resp.data);
-//    printf("msg: %s", resp.data);
+    printf("sizeof resp: %d", sizeof(resp));
+    if (ret < 0) {
+        strcpy(buf, "read failed\n");
+        return -1;
+    }
+    strcpy(buf, resp.data);
+    printf("msg: %s", resp.data);
     return YO_OK;
 }
 
