@@ -107,7 +107,7 @@ int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
     yoSendData resp;
     printf("event_fd %d \n", event->fd);
     ret = read(event->fd, &resp, sizeof(resp));
-    printf("ret: %d\n", ret);
+    printf("reactor: %d\n", reactor->id);
 //    if (ret < 0) {
 //        strcpy(buf, "read failed\n");
 //        return -1;
@@ -189,7 +189,7 @@ static int yoFactoryProcess_worker_loop(yoFactory *factory, int c_pipe)
     c_worker_pipe = c_pipe;
     while (1) {
         n = read(c_pipe, &req, sizeof(req));
-        printf("[Worker]Recv: pipe: %d | pti: %d\n", c_pipe, req.from_id);
+        printf("[Worker: %d]Recv: pipe: %d | pti: %d\n",getpid(), c_pipe, req.from_id);
         if (n > 0) {
             factory->onTask(factory, &req);
         }
@@ -225,7 +225,6 @@ int yoFactoryProcess_finish(yoFactory *factory, yoSendData *resp)
     memcpy(send_data.data, resp->data, resp->len);
     send_data.fd = resp->fd;
     send_data.len = resp->len;
-    printf("%s \n", resp->data);
     write(c_worker_pipe, &send_data, resp->len + (3 * sizeof(int)));
     free(resp);
     return YO_OK;
@@ -235,13 +234,12 @@ int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)
 {
     int ret = 0;
     yoFactoryProcess *this = factory->object;
-    int worker_id = this->c_worker_id;
 
-    if (worker_id >= this->worker_num) {
-        worker_id = 0;
+    if (this->c_worker_id >= this->worker_num) {
+        this->c_worker_id = 0;
     }
-    yoTrace("[ReadThread] send to: pipe= %d | worker= %d\n", this->workers[worker_id].pipe_fd, worker_id);
-    ret = write(this->workers[worker_id].pipe_fd, data, data->len + (3 * sizeof(int)));
+    yoTrace("[ReadThread] send to: pipe= %d | worker= %d\n", this->workers[this->c_worker_id].pipe_fd, this->c_worker_id);
+    ret = write(this->workers[this->c_worker_id].pipe_fd, data, data->len + (3 * sizeof(int)));
     printf("dispatch id: %d\n", data->from_id);
     if (ret < 0) {
         printf("dispatch error !\n");
