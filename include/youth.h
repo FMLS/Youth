@@ -132,13 +132,34 @@ struct __yoReactor
     int  (*setHandle)(yoReactor *, int , yoReactor_handle);
 };
 
+//yoReactor函数声明
 int yoReactor_accept(yoReactor *reactor, yoEvent *event);
 int yoReactor_close(yoReactor *reactor, yoEvent *event);
 int yoReactor_setHandle(yoReactor *reactor, int fdtype, yoReactor_handle handle);
 int yoReactor_receive(yoReactor *reactor, yoEvent *event);
 
+//yoSelectReactor函数声明
 int yoSelectReactor_create(yoReactor *reactor);
 int yoSelectReactor_add(yoReactor *reactor, int fd, int fdtype);
 int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo);
+
+//Factory函数声明
+int yoFactory_create(yoFactory *factory);
+int yoFactory_start(yoFactory *factory);
+int yoFactory_shutdown(yoFactory *factory);
+int yoFactory_dispatch(yoFactory *factory, yoEventData *req);
+int yoFactory_finish(yoFactory *factory, yoSendData *resp);
+int yoFactory_check_callback(yoFactory *factory);
+
+
+
+
+
+
+
+
+
+
+
 
 #endif
