@@ -99,6 +99,8 @@ typedef struct __yoEvent
     int type;
 }yoEvent;
 
+
+
 typedef struct __yoReactor yoReactor;
 typedef int (*yoReactor_handle)(yoReactor *reactor, yoEvent *event);
 
@@ -132,6 +134,41 @@ struct __yoReactor
     int  (*setHandle)(yoReactor *, int , yoReactor_handle);
 };
 
+typedef struct __yoWorker
+{
+    pid_t pid;                  //precess pid
+    int pipe_fd;            
+    int writer_id;
+}yoWorker;
+
+typedef struct __yoThreadWriter
+{
+    pthread_t ptid;             //thread id
+    int event_fd;               
+    int pipe_num;               //this thread's pipe num
+    int *pipes_to_worker;       //pipe to worker process
+    int c_pipe;                 //current pipe
+    yoReactor reactor;          //thread's reactor
+}yoThreadWriter;
+
+typedef struct __yoFactoryProcess
+{
+    yoThreadWriter *writers;
+    yoWorker       *workers;
+    
+    int writer_num;
+    int worker_num;
+    int c_writer_id; //current writer id
+    int c_worker_id; //current worker id
+}yoFactoryProcess;
+
+
+typedef struct __yoThreadParam
+{
+    void *object;
+    int  pti;
+}yoThreadParam;
+
 //yoReactor函数声明
 int yoReactor_accept(yoReactor *reactor, yoEvent *event);
 int yoReactor_close(yoReactor *reactor, yoEvent *event);
@@ -150,6 +187,13 @@ int yoFactory_shutdown(yoFactory *factory);
 int yoFactory_dispatch(yoFactory *factory, yoEventData *req);
 int yoFactory_finish(yoFactory *factory, yoSendData *resp);
 int yoFactory_check_callback(yoFactory *factory);
+
+//FactoryProcess函数声明
+int yoFactoryProcess_start(yoFactory *factory);
+int yoFactoryProcess_shutdown(yoFactory *factory);
+int yoFactoryProcess_finish(yoFactory *factory, yoSendData *resp);
+int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data);
+int yoFactoryProcess_create(yoFactory *factory, int writer_num, int worker_num);
 
 
 
