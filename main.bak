@@ -26,7 +26,6 @@ int main()
             char *buf = "hello I am child \n";
             close(mpipe[0]);
             write(mpipe[1], buf, strlen(buf) + 1);
-            sleep(1);
         }
     }
     else {
