@@ -61,10 +61,10 @@ int yoFactoryProcess_start(yoFactory *factory)
     if (ret < 0) {
         return --step;
     }
-//    ret = yoFactoryProcess_worker_start(factory);
-//    if (ret < 0) {
-//        return --step;
-//    }
+    ret = yoFactoryProcess_worker_start(factory);
+    if (ret < 0) {
+        return --step;
+    }
     return YO_OK;
 }
 
@@ -104,11 +104,16 @@ int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
 {
     char buf[1000];
     int ret = 0;
-    ret = read(event->fd, buf, 100);
-    if (ret < 0) {
-        strcpy(buf, "read failed\n");
-    }
-    printf("fd: %d | from_id: %d | type: %d |msg : %s \n", event->fd, event->from_id, event->type, buf);
+    yoSendData resp;
+    printf("event_fd %d \n", event->fd);
+    ret = read(event->fd, &resp, sizeof(resp));
+    printf("ret: %d\n", ret);
+//    if (ret < 0) {
+//        strcpy(buf, "read failed\n");
+//        return -1;
+//    }
+//    strcpy(buf, resp.data);
+//    printf("msg: %s", resp.data);
     return YO_OK;
 }
 
@@ -140,7 +145,7 @@ static int yoFactoryProcess_worker_start(yoFactory *factory)
 {
     int i = 0 , ret = 0;
     yoFactoryProcess *this = factory->object;
-    for (i = 0; i < this->writer_num; i++) {
+    for (i = 0; i < this->worker_num; i++) {
         yoTrace("[yoFactoryProcess_worker_start] \n");
         ret = yoFactoryProcess_worker_spawn(factory, (i % this->writer_num), i);
     }
@@ -184,7 +189,7 @@ static int yoFactoryProcess_worker_loop(yoFactory *factory, int c_pipe)
     c_worker_pipe = c_pipe;
     while (1) {
         n = read(c_pipe, &req, sizeof(req));
-        yoTrace("[Worker]Recv: pipe: %d | pti: %d\n", c_pipe, req.from_id);
+        printf("[Worker]Recv: pipe: %d | pti: %d\n", c_pipe, req.from_id);
         if (n > 0) {
             factory->onTask(factory, &req);
         }
@@ -199,18 +204,50 @@ static int yoFactoryProcess_worker_loop(yoFactory *factory, int c_pipe)
 
 int yoFactoryProcess_shutdown(yoFactory *factory)
 {
+    int i = 0;
+    pid_t worker_pid;
+    yoFactoryProcess *this = factory->object;
+    for (i = 0; i < this->worker_num; i++) {
+        worker_pid = this->workers[i].pid;
+        kill(worker_pid, SIGTERM);
+        yoTrace("[shutdown] kill worker process [pid: %d ]\n", worker_pid);
+    }
+    free(this->workers);
+    free(this->writers);
+    free(this);
 
     return YO_OK;
 }
 
 int yoFactoryProcess_finish(yoFactory *factory, yoSendData *resp)
 {
-
+    yoEventData send_data;
+    memcpy(send_data.data, resp->data, resp->len);
+    send_data.fd = resp->fd;
+    send_data.len = resp->len;
+    printf("%s \n", resp->data);
+    write(c_worker_pipe, &send_data, resp->len + (3 * sizeof(int)));
+    free(resp);
     return YO_OK;
 }
 
 int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)
 {
+    int ret = 0;
+    yoFactoryProcess *this = factory->object;
+    int worker_id = this->c_worker_id;
+
+    if (worker_id >= this->worker_num) {
+        worker_id = 0;
+    }
+    yoTrace("[ReadThread] send to: pipe= %d | worker= %d\n", this->workers[worker_id].pipe_fd, worker_id);
+    ret = write(this->workers[worker_id].pipe_fd, data, data->len + (3 * sizeof(int)));
+    printf("dispatch id: %d\n", data->from_id);
+    if (ret < 0) {
+        printf("dispatch error !\n");
+        return YO_ERR;
+    }
+    this->c_worker_id++;
 
     return YO_OK;
 }
