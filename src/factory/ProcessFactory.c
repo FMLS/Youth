@@ -113,7 +113,7 @@ int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
         return -1;
     }
     strcpy(buf, resp.data);
-    printf("msg: %s", resp.data);
+    printf("Reactor_id: %d msg: %s", reactor->id, resp.data);
     return YO_OK;
 }
 
