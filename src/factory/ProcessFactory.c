@@ -78,14 +78,14 @@ static int yoFactoryProcess_writer_start(yoFactory *factory)
     for (i = 0; i < this->writer_num; i++) {
         param = yo_malloc(sizeof(yoThreadParam));
         if (param == NULL) {
-            yoTrace("[yoFactoryProcess_writer_start] malloc failed\n");
+            yoTrace("[create writer]malloc failed\n");
             return YO_ERR;
         }
         param->object = factory;
         param->pti = i;
         ret = pthread_create(&thread_id, NULL, (void* (*)(void *))yoFactoryProcess_writer_loop, (void *)param);
         if (ret < 0) {
-            yoTrace("[yoFactoryProcess_writer_start] pthread_create failed \n");
+            yoTrace("pthread_create failed \n");
             return YO_ERR;
         }
         this->writers[i].ptid = thread_id;
@@ -129,7 +129,7 @@ int yoFactoryProcess_writer_loop(yoThreadParam *param)
     reactor->id = pti;
 
     if (yoSelectReactor_create(reactor) < 0) {
-        yoTrace("[yoFactoryProcess_writer_loop] yoReacotrSelect_create failed \n");
+        yoTrace("yoReacotrSelect_create failed \n");
         pthread_exit((void*)param);
     }
 
@@ -159,13 +159,13 @@ static int yoFactoryProcess_worker_spawn(yoFactory *factory, int writer_id, int 
     yoFactoryProcess *this = factory->object;
     ret = socketpair(PF_LOCAL, SOCK_DGRAM, 0, pipe);
     if (ret < 0) {
-        yoTrace("[yoFactoryProcess_worker_spaw] create unix socket failed \n");
+        yoTrace("create unix socket failed \n");
         return YO_ERR;
     }
 
     pid = fork();
     if (pid < 0) {
-        yoTrace("[yoFactoryProcess_worker_spaw] fork worker process failed \n");
+        yoTrace("fork worker process failed \n");
         exit(5);
     }
     else if (pid == 0){
@@ -214,7 +214,6 @@ int yoFactoryProcess_shutdown(yoFactory *factory)
     free(this->workers);
     free(this->writers);
     free(this);
-
     return YO_OK;
 }
 

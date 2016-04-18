@@ -41,12 +41,12 @@ int yoServer_create(yoServer *serv)
     int ret = 0, step = 0;
     serv->event_fd = eventfd(0, EFD_NONBLOCK);
     if (serv->event_fd < 0) {
-       yoTrace("[yoServer_create] create event_fd failed \n");
+       yoTrace("create event_fd failed \n");
        return --step;
     }
     serv->threads = yo_calloc(serv->poll_thread_num, sizeof(yoThreadPoll));
     if (serv->threads == NULL) {
-        yoTrace("[yoServer_create] ThreadPoll calloc failed\n");
+        yoTrace("ThreadPoll calloc failed\n");
         return --step;
     }
     if (serv->factory_mode == YO_MODE_PROCESS) {
@@ -60,7 +60,7 @@ int yoServer_create(yoServer *serv)
         ret = yoFactory_create(&(serv->factory));
     }
     if (ret < 0) {
-        yoTrace("[yoServer_create] create factory fail\n");
+        yoTrace("create factory fail\n");
         return --step;
     }
     serv->factory.ptr = serv;
@@ -81,7 +81,7 @@ int yoServer_start(yoServer *serv)
 
     ret = yoServer_check_callback(serv);
     if (ret < 0) {
-        yoTrace("[yoServer_start] check_callback failed!\n");
+        yoTrace("check_callback failed!\n");
         return --step;
     }
 
@@ -93,13 +93,13 @@ int yoServer_start(yoServer *serv)
 
     ret = factory->start(factory);
     if (ret < 0) {
-        yoTrace("[yoServer_start] factory start failed! \n");
+        yoTrace("factory start failed! \n");
         return --step;
     }
 
     ret = yoServer_poll_start(serv);
     if (ret < 0) {
-        yoTrace("[yoServer_start] poll start failed! \n");
+        yoTrace("poll start failed! \n");
         return --step;
     }
     bzero(&server_addr, sizeof(struct sockaddr_in));
@@ -117,19 +117,19 @@ int yoServer_start(yoServer *serv)
     
     ret = bind(serv->sock, (struct sockaddr *)&server_addr, sizeof(struct sockaddr_in));
     if (ret !=  0) {
-        yoTrace("[yoServer_create] bind failed \n");
+        yoTrace("bind failed \n");
         return --step;
     }
 
     ret = listen(serv->sock, serv->backlog);
     if (ret != 0) {
-        yoTrace("[yoServer_create] listen fail \n");
+        yoTrace("listen fail \n");
         return --step;
     }
 
     ret = yoSelectReactor_create(&main_reactor);
     if (ret < 0) {
-        yoTrace("[yoServer_create] SelectReactor_create fail \n");
+        yoTrace("SelectReactor_create fail \n");
         return --step;
     }
 
@@ -231,7 +231,7 @@ static int yoServer_poll_start(yoServer *serv)
     for (i = 0; i < serv->poll_thread_num; i++) {
         param = yo_malloc(sizeof(yoThreadParam));
         if (param == NULL) {
-            yoTrace("[yoServer_poll_start] malloc yoThreadParam failed\n");
+            yoTrace("malloc yoThreadParam failed\n");
             return YO_ERR;
         }
         param->object = serv;
@@ -251,7 +251,7 @@ static int yoServer_poll_loop(yoThreadParam *param)
     reactor->ptr = serv;
     ret = yoSelectReactor_create(reactor);
     if (ret < 0) {
-        yoTrace("[yoServer_poll_loop] SelectReactor_create failed\n");
+        yoTrace("SelectReactor_create failed\n");
         return YO_ERR;
     }
     tmo.tv_sec = serv->timeout_sec;
@@ -279,11 +279,11 @@ static int yoServer_poll_onReceive(yoReactor *reactor, yoEvent *event)
     bzero(from_client.data, sizeof(from_client));
     ret = yoRead(event->fd, from_client.data, YO_BUFFER_SIZE);
     if (ret < 0) {
-            yoTrace("[yoServer_poll_onReceive] read fd error\n");
+            yoTrace("read fd error\n");
         return YO_ERR;
     }
     else if (ret == 0) {
-        yoTrace("[yoServer_poll_onReceive] Close event.fd:%d | from: %d\n", event->fd, event->from_id);
+        yoTrace("Close event.fd:%d | from: %d\n", event->fd, event->from_id);
         reactor->del(reactor, event->fd);
         close(event->fd);
 //        return yoServer_close(serv, event);
