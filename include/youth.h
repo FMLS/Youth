@@ -99,7 +99,20 @@ typedef struct __yoEvent
     int type;
 }yoEvent;
 
+typedef struct __yoEventClose
+{
+    int from_id;
+    int fd;
+}yoEventClose;
 
+typedef struct __yoEventConnect
+{
+    int from_id;
+    int conn_fd;
+    int serv_fd;
+    struct sockaddr_in addr;
+    socklen_t addrlen;
+}yoEventConnect;
 
 typedef struct __yoReactor yoReactor;
 typedef int (*yoReactor_handle)(yoReactor *reactor, yoEvent *event);
@@ -197,7 +210,10 @@ int yoFactoryProcess_create(yoFactory *factory, int writer_num, int worker_num);
 
 
 
-
+int yoRead(int fd, char *buf, int count);
+int yoWrite(int fd, char *buf, int count);
+void yoSetNonBlock(int sock);
+void yoSetBlock(int sock);
 
 
 
