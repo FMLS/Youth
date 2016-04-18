@@ -36,7 +36,7 @@ struct __yoServer
 
     int c_pti;
 
-    yoReactor    reactor; //可能没用
+    yoReactor    main_reactor; //可能没用
     yoFactory    factory;
     yoThreadPoll *threads;
 

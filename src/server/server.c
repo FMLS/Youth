@@ -74,7 +74,8 @@ int yoServer_start(yoServer *serv)
 {
     int option;
     int ret = 0, step = 0;
-    yoReactor main_reactor;
+    //未测试
+    yoReactor *main_reactor = serv->main_reactor;
     yoFactory *factory = &(serv->factory);
     struct timeval tmo;
     struct sockaddr_in server_addr;
@@ -127,25 +128,25 @@ int yoServer_start(yoServer *serv)
         return --step;
     }
 
-    ret = yoSelectReactor_create(&main_reactor);
+    ret = yoSelectReactor_create(main_reactor);
     if (ret < 0) {
         yoTrace("SelectReactor_create fail \n");
         return --step;
     }
 
-    main_reactor.ptr = serv;
+    main_reactor->ptr = serv;
 //    serv->main_reactor = &main_reactor;
 
     tmo.tv_sec = 5;
     tmo.tv_usec = 0;
 
-    main_reactor.setHandle(&main_reactor, YO_EVENT_CLOSE, yoServer_onClose);
-    main_reactor.setHandle(&main_reactor, YO_EVENT_CONNECT, yoServer_onAccept);
-    main_reactor.add(&main_reactor, serv->event_fd, YO_EVENT_CLOSE);
-    main_reactor.add(&main_reactor, serv->sock, YO_EVENT_CONNECT);
+    main_reactor->setHandle(main_reactor, YO_EVENT_CLOSE, yoServer_onClose);
+    main_reactor->setHandle(main_reactor, YO_EVENT_CONNECT, yoServer_onAccept);
+    main_reactor->add(main_reactor, serv->event_fd, YO_EVENT_CLOSE);
+    main_reactor->add(main_reactor, serv->sock, YO_EVENT_CONNECT);
 
     serv->onStart(serv);
-    main_reactor.wait(&main_reactor, &tmo);
+    main_reactor->wait(main_reactor, &tmo);
     serv->onShutdown(serv);
     return YO_OK;
 }
