@@ -44,14 +44,19 @@ struct __yoServer
 
     void (*onStart)     (yoServer *serv);
     void (*onConnect)   (yoServer *serv, int fd, int from_id);
-    int  (*onReceive)   (yoServer *serv, yoEventData *data);
+    int  (*onReceive)   (yoFactory *factory, yoEventData *data);
     void (*onClose)     (yoServer *serv, int fd, int from_id);
     void (*onShutdown)  (yoServer *serv);
 
 };
 
-
-
+void yoServer_init(yoServer *serv);
+int yoServer_create(yoServer *serv);
+int yoServer_start(yoServer *serv);
+int yoServer_onClose(yoReactor *reactor, yoEvent *event);
+int yoServer_onAccept(yoReactor *reactor, yoEvent *event);
+int yoServer_close(yoServer *serv, yoEvent *event);
+int yoServer_onFinish(yoFactory *factory, yoSendData *resp);
 
 
 

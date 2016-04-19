@@ -3,11 +3,6 @@
 #include "server.h"
 
 //static int child_fork = 0;
-void yoServer_init(yoServer *serv);
-int yoServer_create(yoServer *serv);
-int yoServer_start(yoServer *serv);
-int yoServer_onClose(yoReactor *reactor, yoEvent *event); 
-int yoServer_onAccept(yoReactor *reactor, yoEvent *event);
 static int yoServer_check_callback(yoServer *serv);
 static int yoServer_poll_start(yoServer *serv);
 static int yoServer_poll_loop(yoThreadParam *param);
@@ -69,7 +64,7 @@ int yoServer_create(yoServer *serv)
         return --step;
     }
     serv->factory.ptr = serv;
-//    serv->factory.onTask = serv->onReceive;
+    serv->factory.onTask = serv->onReceive;
 //    serv->factory.onFinish = yoServer_onFinish;
     return YO_OK;
 
@@ -198,6 +193,7 @@ int yoServer_onAccept(yoReactor *reactor, yoEvent *event)
         yoTrace("[mainReactor] add event to thread's reactor failed! Errno: %d | fd: %d \n",errno, conn_fd);
         return YO_ERR;
     }
+    printf("accept: %d\n", conn_fd);
     serv->onConnect(serv, conn_fd, serv->c_pti);
     serv->c_pti++;
 
@@ -251,6 +247,7 @@ static int yoServer_poll_loop(yoThreadParam *param)
     int ret = 0, pti = param->pti;
     yoServer *serv = param->object;
     yoReactor *reactor = &(serv->threads[pti].reactor);
+    reactor->ptr = serv;
     ret = yoSelectReactor_create(reactor);
     if (ret < 0) {
         yoTrace("[yoServer_poll_loop] SelectReactor_create failed\n");
@@ -286,13 +283,13 @@ static int yoServer_poll_onReceive(yoReactor *reactor, yoEvent *event)
     }
     else if (ret == 0) {
         yoTrace("[yoServer_poll_onReceive] Close event.fd:%d | from: %d\n", event->fd, event->from_id);
-          return YO_OK;
         return yoServer_close(serv, event);
     }
     else {
        from_client.fd = event->fd;
        from_client.len = ret;
        from_client.from_id = event->from_id;
+       yoTrace("before dispatch\n");
        n = factory->dispatch(factory, &from_client);
     }
     return YO_OK;
@@ -306,7 +303,10 @@ int yoServer_close(yoServer *serv, yoEvent *event)
     return write(serv->event_fd, &cev, sizeof(cev));
 }
 
-
+int yoServer_onFinish(yoFactory *factory, yoSendData *resp)
+{
+    return yoWrite(resp->fd, resp->data, resp->len);
+}
 
 
 

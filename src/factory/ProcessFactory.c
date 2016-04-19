@@ -102,18 +102,17 @@ static int yoFactoryProcess_writer_start(yoFactory *factory)
 
 int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
 {
-    char buf[1000];
+//    char buf[1000];
     int ret = 0;
-    yoSendData resp;
-    printf("event_fd %d \n", event->fd);
+    yoEventData resp;
+//    yoSendData packtosend;
+//    printf("event_fd %d \n", event->fd);
     ret = read(event->fd, &resp, sizeof(resp));
-    printf("sizeof resp: %d", sizeof(resp));
-    if (ret < 0) {
-        strcpy(buf, "read failed\n");
-        return -1;
-    }
-    strcpy(buf, resp.data);
-    printf("Reactor_id: %d msg: %s", reactor->id, resp.data);
+//    packtosend.fd = resp.fd;
+//    packtosend.len = resp.len;
+//    packtosend.data = resp.data;
+    yoWrite(resp.fd, resp.data, resp.len);
+    printf("send to %d : %s \n", resp.fd, resp.data);
     return YO_OK;
 }
 
@@ -226,12 +225,13 @@ int yoFactoryProcess_finish(yoFactory *factory, yoSendData *resp)
     send_data.fd = resp->fd;
     send_data.len = resp->len;
     write(c_worker_pipe, &send_data, resp->len + (3 * sizeof(int)));
-    free(resp);
+//    free(resp);
     return YO_OK;
 }
 
 int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)
 {
+    printf("In dispatch\n");
     int ret = 0;
     yoFactoryProcess *this = factory->object;
 
