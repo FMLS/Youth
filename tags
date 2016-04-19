@@ -142,8 +142,11 @@ YOUTH_H_	include/youth.h	2;"	d
 YO_BACKLOG	include/youth.h	26;"	d
 YO_BUFFER_SIZE	include/youth.h	25;"	d
 YO_CPU_NUM	include/youth.h	67;"	d
+YO_DEBUG	main.c	1;"	d	file:
 YO_ERR	include/youth.h	50;"	d
 YO_ERROR_MSG_SIZE	include/youth.h	70;"	d
+YO_EVENT_CLOSE	include/server.h	6;"	d
+YO_EVENT_CONNECT	include/server.h	7;"	d
 YO_FD_CLOSE	include/youth.h	54;"	d
 YO_FD_CONN	include/youth.h	52;"	d
 YO_FD_ERROR	include/youth.h	55;"	d
@@ -176,26 +179,50 @@ _RS	include/list.h	86;"	d
 _RS	include/list.h	94;"	d
 _SV	include/list.h	81;"	d
 _SV	include/list.h	89;"	d
+__YO_SERVER_H	include/server.h	2;"	d
 __yoEvent	include/youth.h	/^typedef struct __yoEvent$/;"	s
+__yoEventClose	include/youth.h	/^typedef struct __yoEventClose$/;"	s
+__yoEventConnect	include/youth.h	/^typedef struct __yoEventConnect$/;"	s
 __yoEventData	include/youth.h	/^typedef struct __yoEventData$/;"	s
 __yoFactory	include/youth.h	/^typedef struct __yoFactory$/;"	s
+__yoFactoryProcess	include/youth.h	/^typedef struct __yoFactoryProcess$/;"	s
 __yoListNode	src/reactor/SelectReactor.c	/^typedef struct __yoListNode$/;"	s	file:
 __yoReactor	include/youth.h	/^struct __yoReactor$/;"	s
 __yoSelectReactor	src/reactor/SelectReactor.c	/^typedef struct __yoSelectReactor$/;"	s	file:
 __yoSendData	include/youth.h	/^typedef struct __yoSendData$/;"	s
+__yoServer	include/server.h	/^struct __yoServer$/;"	s
+__yoThreadParam	include/youth.h	/^typedef struct __yoThreadParam$/;"	s
+__yoThreadWriter	include/youth.h	/^typedef struct __yoThreadWriter$/;"	s
+__yoTreadPoll	include/server.h	/^typedef struct __yoTreadPoll$/;"	s
+__yoWorker	include/youth.h	/^typedef struct __yoWorker$/;"	s
 add	include/youth.h	/^    int  (*add)      (yoReactor *, int, int);$/;"	m	struct:__yoReactor
+addr	include/youth.h	/^    struct sockaddr_in addr;$/;"	m	struct:__yoEventConnect	typeref:struct:__yoEventConnect::sockaddr_in
+addrlen	include/youth.h	/^    socklen_t addrlen;$/;"	m	struct:__yoEventConnect
+backlog	include/server.h	/^    int backlog;$/;"	m	struct:__yoServer
 bloom_bv	include/hashtable.h	/^   uint8_t *bloom_bv;$/;"	m	struct:UT_hash_table
 bloom_nbits	include/hashtable.h	/^   char bloom_nbits;$/;"	m	struct:UT_hash_table
 bloom_sig	include/hashtable.h	/^   uint32_t bloom_sig; \/* used only to test bloom exists in external analysis *\/$/;"	m	struct:UT_hash_table
 buckets	include/hashtable.h	/^   UT_hash_bucket *buckets;$/;"	m	struct:UT_hash_table
+c_pipe	include/youth.h	/^    int c_pipe;                 \/\/current pipe$/;"	m	struct:__yoThreadWriter
+c_pti	include/server.h	/^    int c_pti;$/;"	m	struct:__yoServer
+c_worker_id	include/youth.h	/^    int c_worker_id; \/\/current worker id$/;"	m	struct:__yoFactoryProcess
+c_worker_pipe	src/factory/ProcessFactory.c	/^static int c_worker_pipe = 0; \/\/ this process_worker's pipe$/;"	v	file:
+c_writer_id	include/youth.h	/^    int c_writer_id; \/\/current writer id$/;"	m	struct:__yoFactoryProcess
+conn_fd	include/youth.h	/^    int conn_fd;$/;"	m	struct:__yoEventConnect
 count	include/hashtable.h	/^   unsigned count;$/;"	m	struct:UT_hash_bucket
-data	include/youth.h	/^    char *data;$/;"	m	struct:__yoSendData
+daemonize	include/server.h	/^    int daemonize;$/;"	m	struct:__yoServer
+data	include/youth.h	/^    char data[100];$/;"	m	struct:__yoSendData
 data	include/youth.h	/^    char data[YO_BUFFER_SIZE];$/;"	m	struct:__yoEventData
 del	include/youth.h	/^    int  (*del)      (yoReactor *, int     );$/;"	m	struct:__yoReactor
 dispatch	include/youth.h	/^    int (*dispatch) (struct __yoFactory *, yoEventData *);$/;"	m	struct:__yoFactory
+event_fd	include/server.h	/^    int event_fd;$/;"	m	struct:__yoServer
+event_fd	include/youth.h	/^    int event_fd;               $/;"	m	struct:__yoThreadWriter
 expand_mult	include/hashtable.h	/^   unsigned expand_mult;$/;"	m	struct:UT_hash_bucket
+factory	include/server.h	/^    yoFactory    factory;$/;"	m	struct:__yoServer
 factory	include/youth.h	/^    yoFactory *factory;$/;"	m	struct:__yoReactor
+factory_mode	include/server.h	/^    int factory_mode;$/;"	m	struct:__yoServer
 fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoEvent
+fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoEventClose
 fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoEventData
 fd	include/youth.h	/^    int fd;$/;"	m	struct:__yoSendData
 fd	src/reactor/SelectReactor.c	/^    int fd;$/;"	m	struct:__yoListNode	file:
@@ -205,6 +232,8 @@ fdtype	src/reactor/SelectReactor.c	/^    int fdtype;$/;"	m	struct:__yoListNode	f
 finish	include/youth.h	/^    int (*finish)   (struct __yoFactory *, yoSendData  *);$/;"	m	struct:__yoFactory
 free	include/youth.h	/^    void (*free)     (yoReactor *          );$/;"	m	struct:__yoReactor
 from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEvent
+from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEventClose
+from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEventConnect
 from_id	include/youth.h	/^    int from_id;$/;"	m	struct:__yoEventData
 get16bits	include/hashtable.h	441;"	d
 get16bits	include/hashtable.h	444;"	d
@@ -215,6 +244,7 @@ hh_head	include/hashtable.h	/^   struct UT_hash_handle *hh_head;$/;"	m	struct:UT
 hh_next	include/hashtable.h	/^   struct UT_hash_handle *hh_next;   \/* next hh in bucket order        *\/$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_handle
 hh_prev	include/hashtable.h	/^   struct UT_hash_handle *hh_prev;   \/* previous hh in bucket order    *\/$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_handle
 hho	include/hashtable.h	/^   ptrdiff_t hho; \/* hash handle offset (byte pos of hash handle in element *\/$/;"	m	struct:UT_hash_table
+host	include/server.h	/^    char *host;$/;"	m	struct:__yoServer
 id	include/youth.h	/^    int  id;$/;"	m	struct:__yoFactory
 id	include/youth.h	/^    int id;$/;"	m	struct:__yoReactor
 ideal_chain_maxlen	include/hashtable.h	/^   unsigned ideal_chain_maxlen;$/;"	m	struct:UT_hash_table
@@ -224,8 +254,16 @@ keylen	include/hashtable.h	/^   unsigned keylen;                  \/* enclosing 
 len	include/youth.h	/^    int len;$/;"	m	struct:__yoEventData
 len	include/youth.h	/^    int len;$/;"	m	struct:__yoSendData
 log2_num_buckets	include/hashtable.h	/^   unsigned num_buckets, log2_num_buckets;$/;"	m	struct:UT_hash_table
-main	src/reactor/SelectReactor.c	/^int main()$/;"	f
+main	main.c	/^int main()$/;"	f
+max_conn	include/server.h	/^    int max_conn;$/;"	m	struct:__yoServer
 maxfd	src/reactor/SelectReactor.c	/^    int maxfd;$/;"	m	struct:__yoSelectReactor	file:
+myHeadle	main.c	/^int myHeadle(yoReactor *reactor, yoEvent *event) {$/;"	f
+myTask	main.c	/^int myTask(yoFactory *factory, yoEventData *event)$/;"	f
+my_onClose	main.c	/^void my_onClose(yoServer *serv, int fd,int from_id)$/;"	f
+my_onConnect	main.c	/^void my_onConnect(yoServer *serv, int fd,int from_id)$/;"	f
+my_onReceive	main.c	/^int my_onReceive(yoFactory *factory, yoEventData *req)$/;"	f
+my_onShutdown	main.c	/^void my_onShutdown(yoServer *serv)$/;"	f
+my_onStart	main.c	/^void my_onStart(yoServer *serv)$/;"	f
 next	include/hashtable.h	/^   void *next;                       \/* next element in app order      *\/$/;"	m	struct:UT_hash_handle
 next	src/reactor/SelectReactor.c	/^    struct __yoListNode *next, *prev;$/;"	m	struct:__yoListNode	typeref:struct:__yoListNode::__yoListNode	file:
 noexpand	include/hashtable.h	/^   unsigned ineff_expands, noexpand;$/;"	m	struct:UT_hash_table
@@ -234,20 +272,47 @@ num_buckets	include/hashtable.h	/^   unsigned num_buckets, log2_num_buckets;$/;"
 num_items	include/hashtable.h	/^   unsigned num_items;$/;"	m	struct:UT_hash_table
 object	include/youth.h	/^    void *object;$/;"	m	struct:__yoFactory
 object	include/youth.h	/^    void *object;$/;"	m	struct:__yoReactor
+object	include/youth.h	/^    void *object;$/;"	m	struct:__yoThreadParam
+onClose	include/server.h	/^    void (*onClose)     (yoServer *serv, int fd, int from_id);$/;"	m	struct:__yoServer
+onConnect	include/server.h	/^    void (*onConnect)   (yoServer *serv, int fd, int from_id);$/;"	m	struct:__yoServer
 onFinish	include/youth.h	/^    int (*onFinish) (struct __yoFactory *, yoSendData  *);$/;"	m	struct:__yoFactory
+onReceive	include/server.h	/^    int  (*onReceive)   (yoFactory *factory, yoEventData *data);$/;"	m	struct:__yoServer
+onShutdown	include/server.h	/^    void (*onShutdown)  (yoServer *serv);$/;"	m	struct:__yoServer
+onStart	include/server.h	/^    void (*onStart)     (yoServer *serv);$/;"	m	struct:__yoServer
 onTask	include/youth.h	/^    int (*onTask)   (struct __yoFactory *, yoEventData *);$/;"	m	struct:__yoFactory
+pid	include/youth.h	/^    pid_t pid;                  \/\/precess pid$/;"	m	struct:__yoWorker
+pipe_fd	include/youth.h	/^    int pipe_fd;            $/;"	m	struct:__yoWorker
+pipe_num	include/youth.h	/^    int pipe_num;               \/\/this thread's pipe num$/;"	m	struct:__yoThreadWriter
+pipes_to_worker	include/youth.h	/^    int *pipes_to_worker;       \/\/pipe to worker process$/;"	m	struct:__yoThreadWriter
+poll_thread_num	include/server.h	/^    int poll_thread_num;$/;"	m	struct:__yoServer
+port	include/server.h	/^    int port;$/;"	m	struct:__yoServer
 prev	include/hashtable.h	/^   void *prev;                       \/* prev element in app order      *\/$/;"	m	struct:UT_hash_handle
 prev	src/reactor/SelectReactor.c	/^    struct __yoListNode *next, *prev;$/;"	m	struct:__yoListNode	typeref:struct:__yoListNode::	file:
+pti	include/youth.h	/^    int  pti;$/;"	m	struct:__yoThreadParam
+ptid	include/server.h	/^    pthread_t ptid;$/;"	m	struct:__yoTreadPoll
+ptid	include/youth.h	/^    pthread_t ptid;             \/\/thread id$/;"	m	struct:__yoThreadWriter
+ptr	include/server.h	/^    void *ptr;$/;"	m	struct:__yoServer
 ptr	include/youth.h	/^    void *ptr;$/;"	m	struct:__yoFactory
 ptr	include/youth.h	/^    void *ptr;$/;"	m	struct:__yoReactor
+reactor	include/server.h	/^    yoReactor    reactor; \/\/可能没用$/;"	m	struct:__yoServer
+reactor	include/server.h	/^    yoReactor reactor;$/;"	m	struct:__yoTreadPoll
 reactor	include/youth.h	/^    yoReactor *reactor;$/;"	m	struct:__yoFactory
+reactor	include/youth.h	/^    yoReactor reactor;          \/\/thread's reactor$/;"	m	struct:__yoThreadWriter
 read_fds	src/reactor/SelectReactor.c	/^    fd_set read_fds;$/;"	m	struct:__yoSelectReactor	file:
+serv_fd	include/youth.h	/^    int serv_fd;$/;"	m	struct:__yoEventConnect
 setHandle	include/youth.h	/^    int  (*setHandle)(yoReactor *, int , yoReactor_handle);$/;"	m	struct:__yoReactor
 shutdown	include/youth.h	/^    int (*shutdown) (struct __yoFactory *               );$/;"	m	struct:__yoFactory
+signal_fd	include/server.h	/^    int signal_fd;$/;"	m	struct:__yoServer
 signature	include/hashtable.h	/^   uint32_t signature; \/* used only to find hash tables in external analysis *\/$/;"	m	struct:UT_hash_table
+sock	include/server.h	/^    int sock;$/;"	m	struct:__yoServer
 start	include/youth.h	/^    int (*start)    (struct __yoFactory *               );$/;"	m	struct:__yoFactory
 tail	include/hashtable.h	/^   struct UT_hash_handle *tail; \/* tail hh in app order, for fast append    *\/$/;"	m	struct:UT_hash_table	typeref:struct:UT_hash_table::UT_hash_handle
 tbl	include/hashtable.h	/^   struct UT_hash_table *tbl;$/;"	m	struct:UT_hash_handle	typeref:struct:UT_hash_handle::UT_hash_table
+threads	include/server.h	/^    yoThreadPoll *threads;$/;"	m	struct:__yoServer
+timeout_sec	include/server.h	/^    int timeout_sec;$/;"	m	struct:__yoServer
+timeout_usec	include/server.h	/^    int timeout_usec;$/;"	m	struct:__yoServer
+timer_fd	include/server.h	/^    int timer_fd;$/;"	m	struct:__yoServer
+tmp_pipe	main.c	/^int tmp_pipe = 0;$/;"	v
 type	include/youth.h	/^    int type;$/;"	m	struct:__yoEvent
 uint32_t	include/hashtable.h	/^typedef unsigned int uint32_t;$/;"	t
 uint8_t	include/hashtable.h	/^typedef unsigned char uint8_t;$/;"	t
@@ -257,9 +322,36 @@ uthash_free	include/hashtable.h	76;"	d
 uthash_malloc	include/hashtable.h	73;"	d
 uthash_noexpand_fyi	include/hashtable.h	80;"	d
 wait	include/youth.h	/^    int  (*wait)     (yoReactor *, struct timeval *);$/;"	m	struct:__yoReactor
+worker_num	include/server.h	/^    int worker_num;$/;"	m	struct:__yoServer
+worker_num	include/youth.h	/^    int worker_num;$/;"	m	struct:__yoFactoryProcess
+workers	include/youth.h	/^    yoWorker       *workers;$/;"	m	struct:__yoFactoryProcess
+writer_id	include/youth.h	/^    int writer_id;$/;"	m	struct:__yoWorker
+writer_num	include/server.h	/^    int writer_num;$/;"	m	struct:__yoServer
+writer_num	include/youth.h	/^    int writer_num;$/;"	m	struct:__yoFactoryProcess
+writers	include/youth.h	/^    yoThreadWriter *writers;$/;"	m	struct:__yoFactoryProcess
 yoEvent	include/youth.h	/^}yoEvent;$/;"	t	typeref:struct:__yoEvent
+yoEventClose	include/youth.h	/^}yoEventClose;$/;"	t	typeref:struct:__yoEventClose
+yoEventConnect	include/youth.h	/^}yoEventConnect;$/;"	t	typeref:struct:__yoEventConnect
 yoEventData	include/youth.h	/^}yoEventData;$/;"	t	typeref:struct:__yoEventData
 yoFactory	include/youth.h	/^}yoFactory;$/;"	t	typeref:struct:__yoFactory
+yoFactoryProcess	include/youth.h	/^}yoFactoryProcess;$/;"	t	typeref:struct:__yoFactoryProcess
+yoFactoryProcess_create	src/factory/ProcessFactory.c	/^int yoFactoryProcess_create(yoFactory *factory, int writer_num, int worker_num)$/;"	f
+yoFactoryProcess_dispatch	src/factory/ProcessFactory.c	/^int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)$/;"	f
+yoFactoryProcess_finish	src/factory/ProcessFactory.c	/^int yoFactoryProcess_finish(yoFactory *factory, yoSendData *resp)$/;"	f
+yoFactoryProcess_shutdown	src/factory/ProcessFactory.c	/^int yoFactoryProcess_shutdown(yoFactory *factory)$/;"	f
+yoFactoryProcess_start	src/factory/ProcessFactory.c	/^int yoFactoryProcess_start(yoFactory *factory)$/;"	f
+yoFactoryProcess_worker_loop	src/factory/ProcessFactory.c	/^static int yoFactoryProcess_worker_loop(yoFactory *factory, int c_pipe)$/;"	f	file:
+yoFactoryProcess_worker_spawn	src/factory/ProcessFactory.c	/^static int yoFactoryProcess_worker_spawn(yoFactory *factory, int writer_id, int worker_id)$/;"	f	file:
+yoFactoryProcess_worker_start	src/factory/ProcessFactory.c	/^static int yoFactoryProcess_worker_start(yoFactory *factory)$/;"	f	file:
+yoFactoryProcess_writer_loop	src/factory/ProcessFactory.c	/^int yoFactoryProcess_writer_loop(yoThreadParam *param)$/;"	f
+yoFactoryProcess_writer_receive	src/factory/ProcessFactory.c	/^int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)$/;"	f
+yoFactoryProcess_writer_start	src/factory/ProcessFactory.c	/^static int yoFactoryProcess_writer_start(yoFactory *factory)$/;"	f	file:
+yoFactory_check_callback	src/factory/Factory.c	/^int yoFactory_check_callback(yoFactory *factory)$/;"	f
+yoFactory_create	src/factory/Factory.c	/^int yoFactory_create(yoFactory *factory)$/;"	f
+yoFactory_dispatch	src/factory/Factory.c	/^int yoFactory_dispatch(yoFactory *factory, yoEventData *req)$/;"	f
+yoFactory_finish	src/factory/Factory.c	/^int yoFactory_finish(yoFactory *factory, yoSendData *resp)$/;"	f
+yoFactory_shutdown	src/factory/Factory.c	/^int yoFactory_shutdown(yoFactory *factory)$/;"	f
+yoFactory_start	src/factory/Factory.c	/^int yoFactory_start(yoFactory *factory)$/;"	f
 yoListNode	src/reactor/SelectReactor.c	/^}yoListNode;$/;"	t	typeref:struct:__yoListNode	file:
 yoReactor	include/youth.h	/^typedef struct __yoReactor yoReactor;$/;"	t	typeref:struct:__yoReactor
 yoReactor_accept	src/reactor/ReactorBase.c	/^int yoReactor_accept(yoReactor *reactor, yoEvent * event)$/;"	f
@@ -267,6 +359,7 @@ yoReactor_close	src/reactor/ReactorBase.c	/^int yoReactor_close(yoReactor *react
 yoReactor_handle	include/youth.h	/^typedef int (*yoReactor_handle)(yoReactor *reactor, yoEvent *event);$/;"	t
 yoReactor_receive	src/reactor/ReactorBase.c	/^int yoReactor_receive(yoReactor *reactor, yoEvent *event)$/;"	f
 yoReactor_setHandle	src/reactor/ReactorBase.c	/^int yoReactor_setHandle(yoReactor *reactor, int fdtype, yoReactor_handle handle)$/;"	f
+yoRead	src/Base.c	/^int yoRead(int fd, char *buf, int count)$/;"	f
 yoSelectReactor	src/reactor/SelectReactor.c	/^}yoSelectReactor;$/;"	t	typeref:struct:__yoSelectReactor	file:
 yoSelectReactor_add	src/reactor/SelectReactor.c	/^int yoSelectReactor_add(yoReactor *reactor, int fd, int fdtype)$/;"	f
 yoSelectReactor_cmp	src/reactor/SelectReactor.c	/^int yoSelectReactor_cmp(yoListNode *a, yoListNode *b)$/;"	f
@@ -275,8 +368,28 @@ yoSelectReactor_del	src/reactor/SelectReactor.c	/^int yoSelectReactor_del(yoReac
 yoSelectReactor_free	src/reactor/SelectReactor.c	/^void yoSelectReactor_free(yoReactor *reactor)$/;"	f
 yoSelectReactor_wait	src/reactor/SelectReactor.c	/^int yoSelectReactor_wait(yoReactor *reactor, struct timeval *timeo)$/;"	f
 yoSendData	include/youth.h	/^}yoSendData;$/;"	t	typeref:struct:__yoSendData
+yoServer	include/server.h	/^typedef struct __yoServer yoServer;$/;"	t	typeref:struct:__yoServer
+yoServer_check_callback	src/server/server.c	/^static int yoServer_check_callback(yoServer *serv)$/;"	f	file:
+yoServer_close	src/server/server.c	/^int yoServer_close(yoServer *serv, yoEvent *event)$/;"	f
+yoServer_create	src/server/server.c	/^int yoServer_create(yoServer *serv)$/;"	f
+yoServer_init	src/server/server.c	/^void yoServer_init(yoServer *serv)$/;"	f
+yoServer_onAccept	src/server/server.c	/^int yoServer_onAccept(yoReactor *reactor, yoEvent *event)$/;"	f
+yoServer_onClose	src/server/server.c	/^int yoServer_onClose(yoReactor *reactor, yoEvent *event)$/;"	f
+yoServer_onFinish	src/server/server.c	/^int yoServer_onFinish(yoFactory *factory, yoSendData *resp)$/;"	f
+yoServer_poll_loop	src/server/server.c	/^static int yoServer_poll_loop(yoThreadParam *param)$/;"	f	file:
+yoServer_poll_onClose	src/server/server.c	/^static int yoServer_poll_onClose(yoReactor *reactor, yoEvent *event)$/;"	f	file:
+yoServer_poll_onReceive	src/server/server.c	/^static int yoServer_poll_onReceive(yoReactor *reactor, yoEvent *event)$/;"	f	file:
+yoServer_poll_start	src/server/server.c	/^static int yoServer_poll_start(yoServer *serv)$/;"	f	file:
+yoServer_start	src/server/server.c	/^int yoServer_start(yoServer *serv)$/;"	f
+yoSetBlock	src/Base.c	/^void yoSetBlock(int sock)$/;"	f
+yoSetNonBlock	src/Base.c	/^void yoSetNonBlock(int sock)$/;"	f
+yoThreadParam	include/youth.h	/^}yoThreadParam;$/;"	t	typeref:struct:__yoThreadParam
+yoThreadPoll	include/server.h	/^}yoThreadPoll;$/;"	t	typeref:struct:__yoTreadPoll
+yoThreadWriter	include/youth.h	/^}yoThreadWriter;$/;"	t	typeref:struct:__yoThreadWriter
 yoTrace	include/youth.h	62;"	d
 yoTrace	include/youth.h	64;"	d
+yoWorker	include/youth.h	/^}yoWorker;$/;"	t	typeref:struct:__yoWorker
+yoWrite	src/Base.c	/^int yoWrite(int fd, char *buf, int count)$/;"	f
 yo_calloc	include/youth.h	39;"	d
 yo_calloc	include/youth.h	44;"	d
 yo_errno	include/youth.h	/^int yo_errno;$/;"	v
