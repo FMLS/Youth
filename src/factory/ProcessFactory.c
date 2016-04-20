@@ -113,6 +113,7 @@ int yoFactoryProcess_writer_receive(yoReactor *reactor, yoEvent *event)
 //    packtosend.data = resp.data;
     yoWrite(resp.fd, resp.data, resp.len);
     printf("send to %d : %s \n", resp.fd, resp.data);
+//      printf("test!!!\n");
     return YO_OK;
 }
 

@@ -280,7 +280,7 @@ static int yoServer_poll_onReceive(yoReactor *reactor, yoEvent *event)
     bzero(from_client.data, sizeof(from_client));
     ret = yoRead(event->fd, from_client.data, YO_BUFFER_SIZE);
     if (ret < 0) {
-            yoTrace("read fd error\n");
+            yoTrace("read fd error! errno:%d \n", errno);
         return YO_ERR;
     }
     else if (ret == 0) {
