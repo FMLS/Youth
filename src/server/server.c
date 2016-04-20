@@ -134,6 +134,7 @@ int yoServer_start(yoServer *serv)
     }
 
     main_reactor.ptr = serv;
+//    serv->main_reactor = &main_reactor;
 
     tmo.tv_sec = 5;
     tmo.tv_usec = 0;
@@ -255,7 +256,7 @@ static int yoServer_poll_loop(yoThreadParam *param)
     }
     tmo.tv_sec = serv->timeout_sec;
     tmo.tv_usec = serv->timeout_usec;
-    reactor->setHandle(reactor, YO_FD_CLOSE, yoServer_poll_onClose);
+//    reactor->setHandle(reactor, YO_FD_CLOSE, yoServer_poll_onClose);
     reactor->setHandle(reactor, YO_FD_CONN, yoServer_poll_onReceive);
     reactor->wait(reactor, &tmo);
     reactor->free(reactor);
@@ -283,7 +284,9 @@ static int yoServer_poll_onReceive(yoReactor *reactor, yoEvent *event)
     }
     else if (ret == 0) {
         yoTrace("[yoServer_poll_onReceive] Close event.fd:%d | from: %d\n", event->fd, event->from_id);
-        return yoServer_close(serv, event);
+        reactor->del(reactor, event->fd);
+        close(event->fd);
+//        return yoServer_close(serv, event);
     }
     else {
        from_client.fd = event->fd;

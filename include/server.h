@@ -41,6 +41,7 @@ struct __yoServer
     yoThreadPoll *threads;
 
     void *ptr;
+//    void *main_reac_ptr;
 
     void (*onStart)     (yoServer *serv);
     void (*onConnect)   (yoServer *serv, int fd, int from_id);
