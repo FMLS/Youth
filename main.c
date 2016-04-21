@@ -134,7 +134,7 @@ int main()
     yoServer serv;
     yoServer_init(&serv);
     serv.port = 9500;
-    serv.host = "127.0.0.1";
+    serv.host = "172.25.46.3";
     serv.backlog = 128;
     serv.poll_thread_num = 4;
     serv.writer_num = 4;
@@ -173,7 +173,7 @@ int my_onReceive(yoFactory *factory, yoEventData *req)
     resp.len = req->len + 8;
 
     yoTrace("Data Len=%d\n", req->len);
-    snprintf(resp_data, resp.len, "Server:%s", req->data);
+    snprintf(resp_data, resp.len, "%s", req->data);
     resp.data = resp_data;
     ret = factory->finish(factory, &resp);
     yoTrace("finish\n");
