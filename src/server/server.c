@@ -75,7 +75,7 @@ int yoServer_start(yoServer *serv)
     int option;
     int ret = 0, step = 0;
     //未测试
-    yoReactor *main_reactor = serv->main_reactor;
+    yoReactor *main_reactor = &serv->main_reactor;
     yoFactory *factory = &(serv->factory);
     struct timeval tmo;
     struct sockaddr_in server_addr;
