@@ -30,7 +30,7 @@ int yoRead(int fd, char *buf, int count)
 int yoWrite(int fd, char *buf, int count)
 {
 	int nwritten, totlen = 0;
-	while (totlen != count)
+	while (1)
 	{
 		nwritten = write(fd, buf, count - totlen);
 		if (nwritten == 0)

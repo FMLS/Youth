@@ -1,6 +1,5 @@
 #include "youth.h"
 #include "server.h"
-
 int tmp_pipe = 0;
 int myHeadle(yoReactor *reactor, yoEvent *event) {
     char buf[100];
@@ -137,9 +136,9 @@ int main()
     serv.port = 9500;
     serv.host = "127.0.0.1";
     serv.backlog = 128;
-    serv.poll_thread_num = 3;
-    serv.writer_num = 2;
-    serv.worker_num = 2;
+    serv.poll_thread_num = 4;
+    serv.writer_num = 4;
+    serv.worker_num = 4;
     serv.factory_mode = 3;
 
     serv.onStart = my_onStart;
