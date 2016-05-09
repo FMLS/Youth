@@ -134,7 +134,7 @@ int main()
     yoServer serv;
     yoServer_init(&serv);
     serv.port = 9500;
-    serv.host = "172.25.46.3";
+    serv.host = "127.0.0.1";
     serv.backlog = 128;
     serv.poll_thread_num = 4;
     serv.writer_num = 4;

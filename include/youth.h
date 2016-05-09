@@ -15,7 +15,7 @@
 #include <sys/eventfd.h>
 #include <sys/select.h>
 #include <pthread.h>
-//#define YO_DEBUG 1
+#define YO_DEBUG 1
 
 #define YO_MAX_FDS      (1024 * 10) //最大文件描述符数量
 #define YO_THREAD_NUM   2           //线程数量

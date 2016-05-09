@@ -246,7 +246,7 @@ int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)
         return YO_ERR;
     }
     this->c_worker_id++;
-
+    yoTrace("dispatch finish\n");
     return YO_OK;
 }
 
