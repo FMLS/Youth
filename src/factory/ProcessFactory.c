@@ -83,7 +83,11 @@ static int yoFactoryProcess_writer_start(yoFactory *factory)
         }
         param->object = factory;
         param->pti = i;
-        ret = pthread_create(&thread_id, NULL, (void* (*)(void *))yoFactoryProcess_writer_loop, (void *)param);
+        ret = pthread_create(&thread_id, 
+                            NULL, 
+                            (void* (*)(void *))yoFactoryProcess_writer_loop, 
+                            (void *)param
+                            );
         if (ret < 0) {
             yoTrace("pthread_create failed \n");
             return YO_ERR;
@@ -176,7 +180,10 @@ static int yoFactoryProcess_worker_spawn(yoFactory *factory, int writer_id, int 
     }
     else {
         close(pipe[1]);
-        this->writers[writer_id].reactor.add(&(this->writers[writer_id].reactor), pipe[0], YO_FD_CONN);
+        this->writers[writer_id].reactor.add(&(this->writers[writer_id].reactor), 
+                                            pipe[0], 
+                                            YO_FD_CONN
+                                            );
         this->workers[worker_id].pipe_fd = pipe[0];
         return pid;
     }
@@ -238,8 +245,13 @@ int yoFactoryProcess_dispatch(yoFactory *factory, yoEventData *data)
     if (this->c_worker_id >= this->worker_num) {
         this->c_worker_id = 0;
     }
-    yoTrace("[ReadThread] send to: pipe= %d | worker= %d\n", this->workers[this->c_worker_id].pipe_fd, this->c_worker_id);
-    ret = write(this->workers[this->c_worker_id].pipe_fd, data, data->len + (3 * sizeof(int)));
+    yoTrace("[ReadThread] send to: pipe= %d | worker= %d\n", 
+            this->workers[this->c_worker_id].pipe_fd, this->c_worker_id
+    );
+    ret = write(this->workers[this->c_worker_id].pipe_fd, 
+                data, 
+                data->len + (3 * sizeof(int))
+    );
     printf("dispatch id: %d\n", data->from_id);
     if (ret < 0) {
         printf("dispatch error !\n");

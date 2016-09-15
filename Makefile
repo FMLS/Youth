@@ -8,7 +8,7 @@ C_SOURCES = $(shell find . -name "*.c")
 C_OBJECTS = $(patsubst %.c, %.o, $(C_SOURCES))
 
 CC = gcc
-C_FLAGS = -D_REENTRANT -DSERVER_DEBUG -c -Wall -Iinclude -g "-fno-stack-protector"
+C_FLAGS = -D_REENTRANT -DSERVER_DEBUG -c -Wall -Iinclude -g -fno-stack-protector
 LINK_FLAGS = -lpthread
 PROGRAM = out.youth
 
